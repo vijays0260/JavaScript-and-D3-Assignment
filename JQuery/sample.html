@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>json with jquery</title>
+<style>
+
+table{border:1px solid}
+table td{padding:15px;border:1px solid }
+
+</style>
+</head>
+
+<body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+
+<script>
+var i;
+var obj={};
+
+var year,desc,value;
+var currentpageno=1;
+var pagesize=4;
+var startid=1;
+var endid=currentpageno*pagesize;
+
+
+//console.log(endid);
+//  var total=(obj.length/pagesize);
+//function binddata(current)
+//{
+var year,desc,value;
+/*var currentpageno=current;
+var pagesize=4;
+var startid=1;
+var endid=currentpageno*pagesize;*/
+
+
+$.getJSON('second1.json',function(data)
+{
+
+$('#dynamictable').append('<table></table>');
+var table = $('#dynamictable').children();
+table.append("<tr><th>Year</th><th>Under 500</th> <th>Over 500</th></tr>")
+for(i=0;i<data.length;i++)
+{
+  obj[i]=data[i];
+  table.append("<tr><td>"+obj[i].year+"</td><td>"+obj[i].Under+"</td><td>"+obj[i].Above+"</td></tr>");
+
+}
+/*
+for (i=startid;i<endid+1;i++){
+table.append("<tr><td>"+obj[i].year+"</td><td>"+obj[i].Above500+"</td><td>"+obj[i].Below500+"</td></tr>");
+
+}
+  //console.log(obj1);
+//console.log(obj);
+//obj[obj1[year]][obj1[desc]];*/
+
+});
+//console.log(obj);
+//}
+/*
+function click()
+{
+for(i=0;i<4;i++)
+{
+  var obj1=obj[i];
+  console.log(obj1);
+}
+}
+//console.log(total);*/
+
+
+</script>
+<h1><center>Chicago crime Report</center></h1>
+<center>
+  <div id="dynamictable">
+</div>
+</center>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<html>
+<head>
+<title>json with jquery</title>
+<style>
+
+table{background:#CCC;border:1px solid #000;}
+table td{padding:15px;border:1px solid #DDD;}
+
+</style>
+</head>
+
+<body>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script>
+
+  var pageSize=4;
+  var currentPageNo=1;
+  var startId=0;
+  var endId=currentPageNo*pageSize;
+  var totalPageNumbers;
+  var objData;
+
+
+  //put the below code in document.ready
+  $(document).ready(function(){
+  $.getJSON('second1.json',function(jsonData)
+  {
+      objData = jsonData;
+
+      if(objData!=undefined)
+      {
+        totalPageNumbers = Math.ceil(objData.length / pageSize);
+        binddata(currentPageNo);
+      }
+  });
+});
+
+
+
+
+
+function binddata(pageNo)
+{
+  var currentPageNo=pageNo;
+  endId=(currentPageNo*pageSize);
+  startId=endId-pageSize;
+
+
+
+  $('#dynamictable').html("");
+  $('#dynamictable').append('<table></table>');
+  var table = $('#dynamictable').children();
+table.append("<tr><th>Year</th><th>Under 500</th> <th>Over 500</th> <th>Delete</th></tr>")
+
+if(endId>objData.length)
+  endId=objData.length;
+
+for (counter=startId;counter<endId;counter++){
+  table.append("<tr><td>"+objData[counter].year+"</td><td>"+objData[counter].Above+"</td><td>"+objData[counter].Under+"</td></tr>");
+}
+
+$('#buttons').html("");
+for(counter=0;counter<totalPageNumbers;counter++)
+{
+  $('#buttons').append('<button type="button" class="btn btn-secondary" onclick="binddata('+ (counter+1) +')">'+ (counter+1) + '</button>');
+}
+$('#button').html("");
+$(function()
+{
+  $('#hello').click(function(e)
+{
+  var row=$(this).closest('<tr>');
+  row.remove();
+
+})
+})
+
+}
+
+function AddData() {
+  var crimedata={};
+  var x=document.getElementById('year').value;
+  var y=document.getElementById('above').value;
+  var z=document.getElementById('under').value;
+  crimedata["year"]=x;
+  crimedata["Above"]=y;
+  crimedata["Under"]=z;
+    objData.push(crimedata);
+console.log(objData);
+
+binddata(currentPageNo);
+}
+
+
+
+  </script>
+  <h1><center>Chicago crime Report</center></h1>
+<center>
+<div id="dynamictable">
+</div>
+<br></center>
+<center>
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" >
+  <div class="btn-group"  role="group" aria-label="First group" id="buttons">
+  </div>
+</div>
+</center>
+  <br>
+  <div>
+  <form >
+    <center>
+      <p><label>Year:</label>
+    <input type="year" value="" name="year" placeholder="year" id="year"><br></p>
+  </center>
+
+  <center>
+    <p><label>Above 500:</label>
+    <input type="Above 500"  value="" name="above" placeholder="Above" id="above"><br></p>
+    </center>
+
+    <center>
+      <p><label>Under 500:</label>
+      <input type="Under 500"  value="" name="under" placeholder="Under" id="under"><br></p>
+      </center>
+      <br>
+      <center>
+  <button type="submit" onclick="AddData()">Add</button>
+  <button type="reset" onclick="Reset()">Reset</button>
+</center>
+</form>
+</div>
+  </body>
+  </html>
